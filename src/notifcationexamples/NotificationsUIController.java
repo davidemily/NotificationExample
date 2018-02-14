@@ -81,6 +81,9 @@ public class NotificationsUIController implements Initializable, Notifiable {
         if (task1 != null) {
             task1Btn.setText("End Task1");
         }
+        if (task1 == null){
+            task1Btn.setText("Start Task1");
+        }
     }
     
     @Override
@@ -102,9 +105,11 @@ public class NotificationsUIController implements Initializable, Notifiable {
             });
             
             task2.start();
-            task2Btn.setText("End Task2");
-            
-        }        
+            task2Btn.setText("End Task2");   
+        }
+        else{
+            stopTask2();
+        }
     }
     
     @FXML
@@ -121,6 +126,10 @@ public class NotificationsUIController implements Initializable, Notifiable {
             task3.start();
             task3Btn.setText("End Task3");
         }
+        else{
+            stopTask3();
+        }
+
     } 
 
     @FXML
