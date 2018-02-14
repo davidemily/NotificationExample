@@ -9,6 +9,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,10 +28,17 @@ public class NotificationsUIController implements Initializable, Notifiable {
 
     @FXML
     private TextArea textArea;
+    @FXML
+    public Button task1Btn;
+    @FXML
+    public Button task2Btn;
+    @FXML
+    public Button task3Btn;
     
     private Task1 task1;
     private Task2 task2;
     private Task3 task3;
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -40,20 +48,38 @@ public class NotificationsUIController implements Initializable, Notifiable {
     public void start(Stage stage) {
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
-                if (task1 != null) task1.end();
-                if (task2 != null) task2.end();
-                if (task3 != null) task3.end();
+                if (task1 != null){
+                    task1.end();
+                    task1Btn.setText("Start Task1");
+                }
+                if (task2 != null){
+                    task2.end();
+                    task2Btn.setText("Start Task2");
+                }
+                
+                if (task3 != null){
+                    task3.end();
+                    task3Btn.setText("Start Task3");
+                }
             }
         });
     }
-    
+        
     @FXML
     public void startTask1(ActionEvent event) {
-        System.out.println("start task 1");
-        if (task1 == null) {
-            task1 = new Task1(2147483647, 1000000);
-            task1.setNotificationTarget(this);
-            task1.start();
+        if(task1Btn.getText()=="End Task1"){
+            stopTask1();
+        }
+        else{        
+            System.out.println("start task 1");
+            if (task1 == null) {
+                task1 = new Task1(2147483647, 1000000);
+                task1.setNotificationTarget(this);
+                task1.start();
+            }
+        }
+        if (task1 != null) {
+            task1Btn.setText("End Task1");
         }
     }
     
@@ -72,9 +98,12 @@ public class NotificationsUIController implements Initializable, Notifiable {
             task2 = new Task2(2147483647, 1000000);
             task2.setOnNotification((String message) -> {
                 textArea.appendText(message + "\n");
+            //task2Btn.setText("Start Task2");
             });
             
             task2.start();
+            task2Btn.setText("End Task2");
+            
         }        
     }
     
@@ -86,9 +115,36 @@ public class NotificationsUIController implements Initializable, Notifiable {
             // this uses a property change listener to get messages
             task3.addPropertyChangeListener((PropertyChangeEvent evt) -> {
                 textArea.appendText((String)evt.getNewValue() + "\n");
+            //task3Btn.setText("Start Task3");
             });
             
             task3.start();
+            task3Btn.setText("End Task3");
         }
     } 
+
+    @FXML
+    public void stopTask1() {
+        task1.end();
+        task1 = null;
+        task1Btn.setText("Start Task1");
+        textArea.appendText("Task 1 Stopped\n");
+    }
+    
+    @FXML
+    public void stopTask2() {
+        task2.end();
+        task2 = null;
+        task1Btn.setText("Start Task2");
+        textArea.appendText("Task 2 Stopped\n");
+    }
+    
+    @FXML
+    public void stopTask3() {
+        task3.end();
+        task3 = null;
+        task3Btn.setText("Start Task3");
+        textArea.appendText("Task 3 Stopped\n");
+    }    
+
 }
