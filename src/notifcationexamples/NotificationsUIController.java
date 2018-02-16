@@ -98,14 +98,14 @@ public class NotificationsUIController implements Initializable, Notifiable {
     public void startTask2(ActionEvent event) {
         System.out.println("start task 2");
         if (task2 == null) {
-            task2 = new Task2(2147483647, 1000000);
+            task2 = new Task2(100000000, 1000000);
             task2.setOnNotification((String message) -> {
                 textArea.appendText(message + "\n");
             //task2Btn.setText("Start Task2");
             });
             
             task2.start();
-            task2Btn.setText("End Task2");   
+            task2Btn.setText("End Task2");
         }
         else{
             stopTask2();
@@ -116,7 +116,7 @@ public class NotificationsUIController implements Initializable, Notifiable {
     public void startTask3(ActionEvent event) {
         System.out.println("start task 3");
         if (task3 == null) {
-            task3 = new Task3(2147483647, 1000000);
+            task3 = new Task3(100000000, 1000000);
             // this uses a property change listener to get messages
             task3.addPropertyChangeListener((PropertyChangeEvent evt) -> {
                 textArea.appendText((String)evt.getNewValue() + "\n");
@@ -129,7 +129,7 @@ public class NotificationsUIController implements Initializable, Notifiable {
         else{
             stopTask3();
         }
-
+        
     } 
 
     @FXML
@@ -144,7 +144,7 @@ public class NotificationsUIController implements Initializable, Notifiable {
     public void stopTask2() {
         task2.end();
         task2 = null;
-        task1Btn.setText("Start Task2");
+        task2Btn.setText("Start Task2");
         textArea.appendText("Task 2 Stopped\n");
     }
     
@@ -155,5 +155,5 @@ public class NotificationsUIController implements Initializable, Notifiable {
         task3Btn.setText("Start Task3");
         textArea.appendText("Task 3 Stopped\n");
     }    
-
+    
 }

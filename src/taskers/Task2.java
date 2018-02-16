@@ -24,6 +24,7 @@ public class Task2 extends Thread {
     
     private ArrayList<Notification> notifications = new ArrayList<>();
     
+    
     public Task2(int maxValue, int notifyEvery)  {
         this.maxValue = maxValue;
         this.notifyEvery = notifyEvery;
