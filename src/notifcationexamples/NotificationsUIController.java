@@ -39,7 +39,6 @@ public class NotificationsUIController implements Initializable, Notifiable {
     private Task2 task2;
     private Task3 task3;
     
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -72,17 +71,12 @@ public class NotificationsUIController implements Initializable, Notifiable {
         }
         else{        
             System.out.println("start task 1");
-            if (task1 == null) {
+            //if (task1 == null) {
                 task1 = new Task1(2147483647, 1000000);
                 task1.setNotificationTarget(this);
                 task1.start();
-            }
-        }
-        if (task1 != null) {
-            task1Btn.setText("End Task1");
-        }
-        if (task1 == null){
-            task1Btn.setText("Start Task1");
+                task1Btn.setText("End Task1");
+            //}
         }
     }
     
@@ -90,17 +84,21 @@ public class NotificationsUIController implements Initializable, Notifiable {
     public void notify(String message) {
         if (message.equals("Task1 done.")) {
             task1 = null;
+            task1Btn.setText("Set Task1");
         }
         textArea.appendText(message + "\n");
     }
     
     @FXML
-    public void startTask2(ActionEvent event) {
-        System.out.println("start task 2");
+    public void startTask2(ActionEvent event) throws InterruptedException {
         if (task2 == null) {
-            task2 = new Task2(100000000, 1000000);
+            System.out.println("start task 2");
+            task2 = new Task2(10000000, 1000000);
             task2.setOnNotification((String message) -> {
                 textArea.appendText(message + "\n");
+                if(message == "Task2 done."){
+                    stopTask2();
+                }
             //task2Btn.setText("Start Task2");
             });
             
@@ -108,24 +106,29 @@ public class NotificationsUIController implements Initializable, Notifiable {
             task2Btn.setText("End Task2");
         }
         else{
+            textArea.appendText("Task 2 Stopped\n");
             stopTask2();
         }
     }
     
     @FXML
-    public void startTask3(ActionEvent event) {
-        System.out.println("start task 3");
+    public void startTask3(ActionEvent event) throws InterruptedException {
         if (task3 == null) {
+            System.out.println("start task 3");
             task3 = new Task3(100000000, 1000000);
             // this uses a property change listener to get messages
             task3.addPropertyChangeListener((PropertyChangeEvent evt) -> {
                 textArea.appendText((String)evt.getNewValue() + "\n");
+                if(evt.getNewValue().equals("Task3 done.")){
+                    task3Btn.setText("Start Task3");
+                }
             //task3Btn.setText("Start Task3");
             });
             
             task3.start();
-            task3Btn.setText("End Task3");
+            task3Btn.setText("End Task3"); 
         }
+        
         else{
             stopTask3();
         }
@@ -145,7 +148,6 @@ public class NotificationsUIController implements Initializable, Notifiable {
         task2.end();
         task2 = null;
         task2Btn.setText("Start Task2");
-        textArea.appendText("Task 2 Stopped\n");
     }
     
     @FXML
